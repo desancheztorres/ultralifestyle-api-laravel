@@ -6,6 +6,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use App\Models\Blog;
+use App\Models\Post;
 
 class User extends Authenticatable
 {
@@ -37,4 +39,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function ownsBlog(Blog $blog) {
+        return $this->id === $blog->user->id;
+    }
+
+    public function ownsPost(Post $post) {
+        return $this->id === $post->user->id;
+    }
 }

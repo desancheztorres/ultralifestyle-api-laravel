@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBlogsTable extends Migration
+class CreateLikesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,9 @@ class CreateBlogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('blogs', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title');
-            $table->string('image');
-            $table->text('description');
-            $table->integer('user_id')->unsigned()->index();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -32,6 +26,6 @@ class CreateBlogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blogs');
+        Schema::dropIfExists('likes');
     }
 }

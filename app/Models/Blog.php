@@ -10,6 +10,7 @@ class Blog extends Model
     use Orderable;
 
     protected $fillable = ['title', 'image', 'description'];
+
     public function user() {
         return $this->belongsTo(User::class);
     }
