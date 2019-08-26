@@ -35,7 +35,7 @@ class BlogController extends Controller
     public function show(Blog $blog) {
         return fractal()
             ->item($blog)
-            ->parseIncludes(['user', 'posts', 'posts.user'])
+            ->parseIncludes(['user', 'posts', 'posts.user', 'posts.likes'])
             ->transformWith(new BlogTransformer)
             ->toArray();
     }

@@ -20,5 +20,19 @@ Route::group(['prefix' => 'blogs'], function() {
         Route::post('/', 'PostController@store')->middleware('auth:api');
         Route::patch('/{post}', 'PostController@update')->middleware('auth:api');
         Route::delete('/{post}', 'PostController@destroy')->middleware('auth:api');
+
+        Route::group(['prefix' => '/{post}/likes'], function () {
+            Route::post('/', 'PostLikeController@store')->middleware('auth:api');
+//            Route::delete('/{post}', 'PostLikeController@destroy')->middleware('auth:api');
+        });
+
     });
+});
+
+Route::group(['prefix' => 'routines'], function() {
+    Route::get('/', 'RoutineController@index');
+    Route::get('/{routine}', 'RoutineController@show')->middleware('auth:api');
+    Route::post('/', 'RoutineController@store')->middleware('auth:api');
+    Route::patch('/{routine}', 'RoutineController@update')->middleware('auth:api');
+    Route::delete('/{routine}', 'RoutineController@destroy')->middleware('auth:api');
 });

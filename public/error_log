@@ -1,3 +1,8 @@
 [24-Aug-2019 15:45:22 UTC] PHP Fatal error:  Class 'League\Fractial\TransformerAbstract' not found in /home/msportalultra/public_html/ultralifestyle/app/Transformers/UserTransformer.php on line 7
 [24-Aug-2019 21:29:37 UTC] PHP Fatal error:  Cannot declare class App\Transformers\UserTransformer, because the name is already in use in /home/msportalultra/public_html/ultralifestyle/app/Transformers/PostTransformer.php on line 17
 [24-Aug-2019 21:32:35 UTC] PHP Fatal error:  Cannot declare class App\Transformers\UserTransformer, because the name is already in use in /home/msportalultra/public_html/ultralifestyle/app/Transformers/PostTransformer.php on line 17
+[25-Aug-2019 16:11:56 UTC] PHP Fatal error:  Cannot use Illuminate\Auth\AuthenticationException as AuthenticationException because the name is already in use in /home/msportalultra/public_html/ultralifestyle/app/Exceptions/Handler.php on line 8
+[25-Aug-2019 16:12:12 UTC] PHP Fatal error:  Cannot use Illuminate\Auth\AuthenticationException as AuthenticationException because the name is already in use in /home/msportalultra/public_html/ultralifestyle/app/Exceptions/Handler.php on line 8
+[25-Aug-2019 16:49:49 UTC] PHP Fatal error:  Class 'App\Http\Requests\FormRequest' not found in /home/msportalultra/public_html/ultralifestyle/app/Http/Requests/StoreBlogRequest.php on line 6
+[26-Aug-2019 14:21:50 UTC] PHP Fatal error:  Class 'App\Http\Requests\FormRequest' not found in /home/msportalultra/public_html/ultralifestyle/app/Http/Requests/UpdateTopicRequest.php on line 5
+[26-Aug-2019 15:16:58 UTC] PHP Fatal error:  Trait 'App\Models\Orderable' not found in /home/msportalultra/public_html/ultralifestyle/app/Models/Routine.php on line 9

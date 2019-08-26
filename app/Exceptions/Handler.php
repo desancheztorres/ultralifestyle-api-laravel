@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+//use MongoDB\Driver\Exception\AuthenticationException;
+use Illuminate\Auth\AuthenticationException;
 
 class Handler extends ExceptionHandler
 {
@@ -46,6 +48,35 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if($request->expectsJson()) {
+            if($exception instanceof \Illuminate\Auth\Access\AuthorizationException) {
+                return response()->json([
+                    'data' => [
+                        'error' => 'Unauthorized.'
+                    ]
+                ], 403);
+            }
+
+            if($exception instanceof \Illuminate\Database\eloquent\ModelNotFoundException) {
+                return response()->json([
+                    'data' => [
+                        'error' => explode('\\', $exception->getModel())[2] . ' not found.'
+                    ]
+                ], 404);
+            }
+        }
         return parent::render($request, $exception);
+    }
+
+    protected function unauthenticated($request, AuthenticationException $exception) {
+        if($request->expectsJson()) {
+            return response()->json([
+                'data' => [
+                    'error' => 'Unauthenticated.'
+                ]
+            ], 401);
+        }
+
+        return redirect()->guest('login');
     }
 }
