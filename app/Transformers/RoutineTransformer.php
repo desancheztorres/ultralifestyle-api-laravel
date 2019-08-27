@@ -4,7 +4,7 @@ namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
 use App\Models\Routine;
-use App\Transformers\WeekDayTransformer;
+
 class RoutineTransformer extends TransformerAbstract
 {
     protected $defaultIncludes = ['user', 'exercises'];

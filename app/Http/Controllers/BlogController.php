@@ -60,7 +60,6 @@ class BlogController extends Controller
             ->parseIncludes(['user', 'posts', 'posts.user'])
             ->transformWith(new BlogTransformer)
             ->toArray();
-
     }
 
     public function update(UpdateTopicRequest $request, Blog $blog) {

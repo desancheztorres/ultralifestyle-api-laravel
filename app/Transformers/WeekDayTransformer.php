@@ -12,11 +12,11 @@ class WeekDayTransformer extends TransformerAbstract
      *
      * @return array
      */
-    public function transform(WeekDay $weekday)
+    public function transform(WeekDay $weekDay)
     {
         return [
-            'id' => $weekday->id,
-            'name' => $weekday->name,
+            'id' => $weekDay->id,
+            'name' => $weekDay->name,
         ];
     }
 }

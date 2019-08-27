@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class BlogTransformer extends TransformerAbstract {
 
-    protected $defaultIncludes = ['user'];
+    protected $defaultIncludes = ['user', 'posts'];
 
     public function transform(Blog $blog) {
         return [

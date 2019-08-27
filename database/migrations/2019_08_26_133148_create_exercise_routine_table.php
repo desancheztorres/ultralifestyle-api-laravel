@@ -17,8 +17,8 @@ class CreateExerciseRoutineTable extends Migration
             $table->increments('id');
             $table->integer('routine_id')->unsigned()->index();
             $table->integer('exercise_id')->unsigned()->index();
-            $table->integer('sets')->unsigned();
-            $table->integer('reps')->unsigned();
+            $table->integer('sets')->unsigned()->nullable();
+            $table->integer('reps')->unsigned()->nullable();
             $table->integer('week_day_id')->unsigned()->index();
             $table->timestamps();
 
