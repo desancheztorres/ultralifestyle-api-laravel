@@ -9,12 +9,15 @@ use App\Transformers\ProfileTransformer;
 use App\Http\Requests\StoreProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Policies\ProfilePolicy;
+use Auth;
 
 class ProfileController extends Controller
 {
-    public function show(User $user) {
+    public function show() {
 
-        $profile = Profile::where('user_id', $user->id);
+        $userId = Auth::guard('api')->id();
+
+        $profile = Profile::where('user_id', $userId)->get();
 
         return fractal()
             ->collection($profile)
@@ -25,6 +28,7 @@ class ProfileController extends Controller
 
     public function store(StoreProfileRequest $request) {
 
+        $userId = Auth::guard('api')->id();
         $profile = new Profile();
 
         $this->authorize('profile', $profile);
@@ -36,6 +40,10 @@ class ProfileController extends Controller
         $profile->ethnic = $request->ethnic;
         $profile->user()->associate($request->user());
 
+        User::where('status', 0)
+                    ->where('id', $userId)
+                    ->update(['status' => 1]);
+
         $profile->save();
 
         return fractal()
@@ -46,7 +54,7 @@ class ProfileController extends Controller
 
     }
 
-    public function update(UpdateProfileRequest $request, User $user, Profile $profile) {
+    public function update(UpdateProfileRequest $request, Profile $profile) {
 
         $this->authorize('update', $profile);
 
@@ -63,5 +71,19 @@ class ProfileController extends Controller
             ->parseIncludes(['user'])
             ->transformWith(new ProfileTransformer)
             ->toArray();
+    }
+
+    public function destroy(Profile $profile) {
+        
+        $userId = Auth::guard('api')->id();
+        $this->authorize('destroy', $profile);
+
+        User::where('status', 1)
+            ->where('id', $userId)
+            ->update(['status' => 0]);
+
+        $profile->delete();
+
+        return response(null, 204);
     }
 }

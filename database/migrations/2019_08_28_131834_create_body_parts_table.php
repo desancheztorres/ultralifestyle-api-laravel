@@ -14,8 +14,9 @@ class CreateBodyPartsTable extends Migration
     public function up()
     {
         Schema::create('body_parts', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+            $table->increments('id');
+            $table->string('name');
+            $table->text('description')->nullable();
         });
     }
 

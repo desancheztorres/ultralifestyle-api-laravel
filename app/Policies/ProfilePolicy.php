@@ -18,4 +18,9 @@ class ProfilePolicy
     {
         return $user->ownsProfile($profile);
     }
+
+    public function destroy(User $user, Profile $profile)
+    {
+        return $user->ownsProfile($profile);
+    }
 }

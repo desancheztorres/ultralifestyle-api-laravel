@@ -15,12 +15,13 @@ Route::group(['prefix' => 'users'], function() {
     Route::get('/{user}', 'UserController@show')->middleware('auth:api');
     Route::patch('/{user}', 'UserController@update')->middleware('auth:api');
     Route::delete('/{user}', 'UserController@destroy')->middleware('auth:api');
+});
 
-    Route::group(['prefix' => '/{user}/profile'], function () {
-        Route::get('/', 'ProfileController@show')->middleware('auth:api');
-        Route::post('/', 'ProfileController@store')->middleware('auth:api');
-        Route::patch('/{profile}', 'ProfileController@update')->middleware('auth:api');
-    });
+Route::group(['prefix' => 'profile'], function () {
+    Route::get('/', 'ProfileController@show')->middleware('auth:api');
+    Route::post('/', 'ProfileController@store')->middleware('auth:api');
+    Route::patch('/{profile}', 'ProfileController@update')->middleware('auth:api');
+    Route::delete('/{profile}', 'ProfileController@destroy')->middleware('auth:api');
 });
 
 Route::group(['prefix' => 'blogs'], function() {
@@ -49,6 +50,14 @@ Route::group(['prefix' => 'routines'], function() {
     Route::post('/', 'RoutineController@store')->middleware('auth:api');
     Route::patch('/{routine}', 'RoutineController@update')->middleware('auth:api');
     Route::delete('/{routine}', 'RoutineController@destroy')->middleware('auth:api');
+});
+
+Route::group(['prefix' => 'body-parts'], function() {
+    Route::get('/', 'BodyPartController@index')->middleware('auth:api');
+    Route::get('/{bodyPart}', 'BodyPartController@show')->middleware('auth:api');
+    Route::post('/', 'BodyPartController@store')->middleware('auth:api');
+    Route::patch('/{bodyPart}', 'BodyPartController@update')->middleware('auth:api');
+    Route::delete('/{bodyPart}', 'BodyPartController@destroy')->middleware('auth:api');
 });
 
 Route::group(['prefix' => 'exercises'], function() {

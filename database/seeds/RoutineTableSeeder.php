@@ -11,7 +11,7 @@ class RoutineTableSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 1; $i<=300; $i++) {
+        for($i = 1; $i<=10; $i++) {
             DB::table('routines')->insert([
                 'name' => "Routine ". $i,
                 'description' => "Description for the routine ".$i,

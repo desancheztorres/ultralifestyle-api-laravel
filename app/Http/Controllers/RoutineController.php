@@ -36,21 +36,23 @@ class RoutineController extends Controller
     public function store(StoreRoutineRequest $request, Routine $routine) {
 
         $routine = new Routine;
+
+        $this->authorize('create', $routine);
+
         $routine->name = $request->name;
         $routine->description = $request->description;
         $routine->user()->associate($request->user());
 
+        $exercisesIds = array();
 
-//        foreach($request->exercises as $exercise) {
-//            $arrayTemp = $exercise['exercise_id'];
-//
-//            array_push($exercisesIds, $arrayTemp);
-//        }
 
-        $exercisesList = array_combine($request->exercisesIds, $request->exercises);
+        foreach($request->exercises as $exercise) {
+            $arrayTemp = $exercise['exercise_id'];
 
-//        dd($exercisesList);
+            array_push($exercisesIds, $arrayTemp);
+        }
 
+        $exercisesList = array_combine($exercisesIds, $request->exercises);
 
         $routine->save();
 

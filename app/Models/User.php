@@ -51,6 +51,10 @@ class User extends Authenticatable
         return Profile::where('user_id', $this->id)->count() === 1;
     }
 
+    public function hasCreatedRoutine() {
+        return Routine::where('user_id', $this->id)->count() === 1;
+    }
+
     public function ownsProfile(Profile $profile) {
         return $this->id === $profile->user->id;
     }

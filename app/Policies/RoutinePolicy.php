@@ -10,6 +10,10 @@ class RoutinePolicy
 {
     use HandlesAuthorization;
 
+    public function create(User $user, Routine $routine) {
+        return !$user->hasCreatedRoutine($routine);
+    }
+
     public function show(User $user, Routine $routine)
     {
         return $user->ownsRoutines($routine);

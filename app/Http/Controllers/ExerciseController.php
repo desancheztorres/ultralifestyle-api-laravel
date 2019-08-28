@@ -15,7 +15,7 @@ class ExerciseController extends Controller
 
         return fractal()
             ->collection($exercises)
-            ->parseIncludes(['user'])
+            ->parseIncludes(['user', 'body_part'])
             ->transformWith(new ExerciseTransformer)
             ->toArray();
 
@@ -24,6 +24,7 @@ class ExerciseController extends Controller
     public function show(Exercise $exercise) {
         return fractal()
             ->item($exercise)
+            ->parseIncludes(['body_part'])
             ->transformWith(new ExerciseTransformer)
             ->toArray();
     }
@@ -35,9 +36,12 @@ class ExerciseController extends Controller
         $exercise->description = $request->description;
 
         $exercise->save();
+        
+        $exercise->bodyParts()->sync($request->body_parts);
 
         return fractal()
             ->item($exercise)
+            ->parseIncludes(['body_part'])
             ->transformWith(new ExerciseTransformer)
             ->toArray();
     }
@@ -49,8 +53,11 @@ class ExerciseController extends Controller
         $exercise->description = $request->get('description', $exercise->description);
         $exercise->save();
 
+        $exercise->bodyParts()->sync($request->body_parts);
+
         return fractal()
             ->item($exercise)
+            ->parseIncludes(['body_part'])
             ->transformWith(new ExerciseTransformer)
             ->toArray();
     }
