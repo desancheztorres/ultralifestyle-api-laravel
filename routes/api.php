@@ -10,6 +10,19 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/register', 'RegisterController@register');
 Route::get('/test', 'RoutineController@test')->middleware('auth:api');
 
+Route::group(['prefix' => 'users'], function() {
+    Route::get('/', 'UserController@index')->middleware('auth:api');
+    Route::get('/{user}', 'UserController@show')->middleware('auth:api');
+    Route::patch('/{user}', 'UserController@update')->middleware('auth:api');
+    Route::delete('/{user}', 'UserController@destroy')->middleware('auth:api');
+
+    Route::group(['prefix' => '/{user}/profile'], function () {
+        Route::get('/', 'ProfileController@show')->middleware('auth:api');
+        Route::post('/', 'ProfileController@store')->middleware('auth:api');
+        Route::patch('/{profile}', 'ProfileController@update')->middleware('auth:api');
+    });
+});
+
 Route::group(['prefix' => 'blogs'], function() {
     Route::get('/', 'BlogController@index')->middleware('auth:api');
     Route::get('/{blog}', 'BlogController@show')->middleware('auth:api');

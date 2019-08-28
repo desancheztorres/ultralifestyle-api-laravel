@@ -10,7 +10,7 @@ class Exercise extends Model
     use Orderable;
 
     public function routines() {
-        return $this->belongsToMany('App\Models\Routine');
+        return $this->belongsToMany('App\Models\Routine')->withPivot('sets', 'reps', 'week_day_id')->withTimestamps();
     }
 
     public function bodyParts() {

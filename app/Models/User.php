@@ -9,10 +9,12 @@ use Laravel\Passport\HasApiTokens;
 use App\Models\Blog;
 use App\Models\Post;
 use App\Models\Routine;
+use App\Models\Profile;
+use App\Traits\Orderable;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasApiTokens;
+    use Notifiable, HasApiTokens, Orderable;
 
     /**
      * The attributes that are mass assignable.
@@ -45,6 +47,14 @@ class User extends Authenticatable
         return $post->likes->where('user_id', $this->id)->count() === 1;
     }
 
+    public function hasCreatedProfile() {
+        return Profile::where('user_id', $this->id)->count() === 1;
+    }
+
+    public function ownsProfile(Profile $profile) {
+        return $this->id === $profile->user->id;
+    }
+
     public function ownsBlog(Blog $blog) {
         return $this->id === $blog->user->id;
     }
@@ -55,5 +65,9 @@ class User extends Authenticatable
 
     public function ownsRoutines(Routine $routine) {
         return $this->id === $routine->user->id;
+    }
+
+    public function profile() {
+        return $this->hasOne('App\Models\Profile');
     }
 }
