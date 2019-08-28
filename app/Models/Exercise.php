@@ -13,6 +13,10 @@ class Exercise extends Model
         return $this->belongsToMany('App\Models\Routine')->withPivot('sets', 'reps', 'week_day_id')->withTimestamps();
     }
 
+    public function plans() {
+        return $this->belongsToMany('App\Models\Plan')->withPivot('sets', 'reps', 'week_day_id')->withTimestamps();
+    }
+
     public function bodyParts() {
         return $this->belongsToMany('App\Models\BodyPart');
     }

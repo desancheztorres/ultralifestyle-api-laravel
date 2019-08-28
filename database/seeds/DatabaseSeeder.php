@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
 //        $this->call(WeekDaysTableSeeder::class);
 //        $this->call(ExercisesTableSeeder::class);
 //        $this->call(RoutineTableSeeder::class);
-        $this->call(BodyPartsTableSeeder::class);
+//        $this->call(BodyPartsTableSeeder::class);
+        $this->call(PlanTableSeeder::class);
     }
 }

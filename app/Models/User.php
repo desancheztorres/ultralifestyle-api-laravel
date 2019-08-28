@@ -59,6 +59,10 @@ class User extends Authenticatable
         return $this->id === $profile->user->id;
     }
 
+    public function ownsPlans(Plan $plan) {
+        return $this->id === $plan->user->id;
+    }
+
     public function ownsBlog(Blog $blog) {
         return $this->id === $blog->user->id;
     }

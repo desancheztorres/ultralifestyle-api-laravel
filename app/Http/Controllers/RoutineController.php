@@ -9,6 +9,7 @@ use App\Transformers\RoutineTransformer;
 use App\Http\Requests\StoreRoutineRequest;
 use App\Http\Requests\UpdateRoutineRequest;
 use App\Models\User;
+use Auth;
 
 class RoutineController extends Controller
 {
@@ -70,11 +71,20 @@ class RoutineController extends Controller
         $routine->name = $request->get('name', $routine->name);
         $routine->description = $request->get('description', $routine->description);
 
-        $exercisesList = array_combine($request->exercisesIds, $request->exercises);
+        $exercisesIds = array();
 
-        $routine->exercises()->sync($exercisesList);
+
+        foreach($request->exercises as $exercise) {
+            $arrayTemp = $exercise['exercise_id'];
+
+            array_push($exercisesIds, $arrayTemp);
+        }
+
+        $exercisesList = array_combine($exercisesIds, $request->exercises);
 
         $routine->save();
+
+        $routine->exercises()->sync($exercisesList);
 
         return fractal()
             ->item($routine)
@@ -91,7 +101,14 @@ class RoutineController extends Controller
         return response(null, 204);
     }
 
-    public function test() {
+    public function routine() {
 
+        $routine = Routine::where('user_id', Auth::guard('api')->id())->get();
+
+        return fractal()
+            ->collection($routine)
+            ->parseIncludes(['user', 'exercises'])
+            ->transformWith(new RoutineTransformer)
+            ->toArray();
     }
 }
