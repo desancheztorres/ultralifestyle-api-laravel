@@ -78,4 +78,8 @@ class User extends Authenticatable
     public function profile() {
         return $this->hasOne('App\Models\Profile');
     }
+
+    public function OauthAcessToken(){
+        return $this->hasMany('\App\Models\OauthAccessToken');
+    }
 }

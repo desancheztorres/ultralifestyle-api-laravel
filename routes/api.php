@@ -26,6 +26,7 @@ Route::group(['prefix' => 'profile'], function () {
 
 Route::group(['prefix' => 'user'], function () {
     Route::get('/routine', 'UserController@routine')->middleware('auth:api');
+    Route::post('/logout','UserController@logoutApi');
 });
 
 Route::group(['prefix' => 'blogs'], function() {

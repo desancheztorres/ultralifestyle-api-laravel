@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Transformers\UserTransformer;
 use App\Http\Requests\UpdateUserRequest;
 use Auth;
+use App\Models\OauthAccessToken;
 
 class UserController extends Controller
 {
@@ -62,5 +63,17 @@ class UserController extends Controller
         $user->delete();
 
         return response(null, 204);
+    }
+
+    public function logoutApi()
+    {
+        $userId = Auth::guard('api')->id();
+
+        if ($userId) {
+            Auth::guard('api')->user()->token()->revoke();
+            return response()->json(['success' =>'user logout'],200);
+        }else{
+            return response()->json(['error' =>'api.something_went_wrong'], 500);
+        }
     }
 }
