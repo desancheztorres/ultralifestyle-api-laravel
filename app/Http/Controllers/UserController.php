@@ -65,6 +65,31 @@ class UserController extends Controller
         return response(null, 204);
     }
 
+    public function active() {
+        $user = Auth::guard('api')->user();
+
+        if($user != null) {
+            return response()->json($user->isActive(), 200);
+        } else {
+            return response()->json([
+                'data' => [
+                    'error' => 'Unauthorized.'
+                ]
+            ], 403);
+        }
+    }
+
+    public function info() {
+        $userId = Auth::guard('api')->id();
+
+        $user = User::where('id', $userId)->first();
+
+        return fractal()
+            ->item($user)
+            ->transformWith(new UserTransformer)
+            ->toArray();
+    }
+
     public function logoutApi()
     {
         $userId = Auth::guard('api')->id();

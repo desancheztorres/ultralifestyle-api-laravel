@@ -16,7 +16,7 @@ class PlanTableSeeder extends Seeder
             DB::table('plans')->insert([
                 'name' => $plan,
                 'description' => "Description for the routine ".$plan,
-                'user_id' => 11,
+                'user_id' => 1,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ]);

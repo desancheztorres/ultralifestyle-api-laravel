@@ -10,6 +10,7 @@ use App\Http\Requests\StoreRoutineRequest;
 use App\Http\Requests\UpdateRoutineRequest;
 use App\Models\User;
 use Auth;
+use DB;
 
 class RoutineController extends Controller
 {
@@ -29,9 +30,8 @@ class RoutineController extends Controller
 
         return fractal()
             ->item($routine)
-            ->parseIncludes(['user', 'exercises'])
             ->transformWith(new RoutineTransformer)
-            ->toArray();
+            ->toJson();
     }
 
     public function store(StoreRoutineRequest $request, Routine $routine) {
@@ -55,9 +55,12 @@ class RoutineController extends Controller
 
         $exercisesList = array_combine($exercisesIds, $request->exercises);
 
+        dd($request->exercises);
+
         $routine->save();
 
         $routine->exercises()->sync($exercisesList);
+//        $routine->recipes()->sync($request->recipes);
 
         return fractal()
             ->item($routine)
@@ -67,6 +70,9 @@ class RoutineController extends Controller
     }
 
     public function update(UpdateRoutineRequest $request, Routine $routine) {
+
+//        $routine = Routine::where('user_id', Auth::guard('api')->id())->get();
+
         $this->authorize('update', $routine);
         $routine->name = $request->get('name', $routine->name);
         $routine->description = $request->get('description', $routine->description);
@@ -84,13 +90,37 @@ class RoutineController extends Controller
 
         $routine->save();
 
-        $routine->exercises()->sync($exercisesList);
+        $userId = Auth::guard('api')->id();
 
-        return fractal()
-            ->item($routine)
-            ->parseIncludes(['user', 'exercises'])
-            ->transformWith(new RoutineTransformer)
-            ->toArray();
+        DB::table('exercise_routine')
+        ->where('routine_id','=',$routine->id)
+        ->where('week_day_id','=',$request->week_day_id)
+        ->delete();
+
+
+
+
+        foreach ($request->exercises as $exercise) {
+            DB::table('exercise_routine')->insert(
+                ["routine_id" => $routine->id, "exercise_id" => $exercise['exercise_id'], "week_day_id" => $exercise['week_day_id']]
+            );
+        }
+
+
+        $recipeRoutine = DB::table('recipe_routine')
+            ->where('routine_id', $routine->id)
+            ->select('id')->get()->toArray();
+
+        foreach($recipeRoutine as $item) {
+            echo $item->id;
+        }
+
+
+//        return fractal()
+//            ->item($routine)
+//            ->parseIncludes(['user', 'exercises'])
+//            ->transformWith(new RoutineTransformer)
+//            ->toArray();
     }
 
     public function destroy(Routine $routine) {
@@ -107,7 +137,6 @@ class RoutineController extends Controller
 
         return fractal()
             ->collection($routine)
-            ->parseIncludes(['user', 'exercises'])
             ->transformWith(new RoutineTransformer)
             ->toArray();
     }

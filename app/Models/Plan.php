@@ -11,7 +11,7 @@ class Plan extends Model
     protected $fillable = ["name", "description"];
 
     public function exercises() {
-        return $this->belongsToMany("App\Models\Exercise");
+        return $this->belongsToMany("App\Models\Exercise")->withPivot('sets', 'reps', 'week_day_id');
     }
 
     public function user() {

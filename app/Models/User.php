@@ -43,6 +43,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function isActive() {
+        return $this->status ? true : false;
+    }
+
     public function hasLikedPost(Post $post) {
         return $post->likes->where('user_id', $this->id)->count() === 1;
     }

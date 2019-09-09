@@ -10,22 +10,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/register', 'RegisterController@register');
 Route::get('/test', 'RoutineController@test')->middleware('auth:api');
 
-Route::group(['prefix' => 'users'], function() {
-    Route::get('/', 'UserController@index')->middleware('auth:api');
-    Route::get('/{user}', 'UserController@show')->middleware('auth:api');
-    Route::patch('/{user}', 'UserController@update')->middleware('auth:api');
-    Route::delete('/{user}', 'UserController@destroy')->middleware('auth:api');
-});
-
 Route::group(['prefix' => 'profile'], function () {
     Route::get('/', 'ProfileController@show')->middleware('auth:api');
     Route::post('/', 'ProfileController@store')->middleware('auth:api');
     Route::patch('/{profile}', 'ProfileController@update')->middleware('auth:api');
-    Route::delete('/{profile}', 'ProfileController@destroy')->middleware('auth:api');
+    Route::delete('/', 'ProfileController@destroy')->middleware('auth:api');
 });
 
 Route::group(['prefix' => 'user'], function () {
     Route::get('/routine', 'UserController@routine')->middleware('auth:api');
+    Route::get('/info', 'UserController@info')->middleware('auth:api');
+    Route::get('/active', 'UserController@active')->middleware('auth:api');
     Route::post('/logout','UserController@logoutApi');
 });
 
@@ -80,6 +75,14 @@ Route::group(['prefix' => 'exercises'], function() {
     Route::post('/', 'ExerciseController@store')->middleware('auth:api');
     Route::patch('/{exercise}', 'ExerciseController@update')->middleware('auth:api');
     Route::delete('/{exercise}', 'ExerciseController@destroy')->middleware('auth:api');
+});
+
+Route::group(['prefix' => 'recipes'], function() {
+    Route::get('/', 'RecipeController@index')->middleware('auth:api');
+    Route::get('/{recipe}', 'RecipeController@show')->middleware('auth:api');
+    Route::post('/', 'RecipeController@store')->middleware('auth:api');
+    Route::patch('/{recipe}', 'RecipeController@update')->middleware('auth:api');
+    Route::delete('/{recipe}', 'RecipeController@destroy')->middleware('auth:api');
 });
 
 Route::group(['prefix' => 'weekdays'], function() {

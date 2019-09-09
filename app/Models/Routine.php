@@ -18,4 +18,8 @@ class Routine extends Model
     public function exercises() {
         return $this->belongsToMany('App\Models\Exercise');
     }
+
+    public function recipes() {
+        return $this->belongsToMany('App\Models\Recipe');
+    }
 }
