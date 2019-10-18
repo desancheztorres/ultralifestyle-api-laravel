@@ -64,6 +64,14 @@ class Handler extends ExceptionHandler
                     ]
                 ], 404);
             }
+
+            if($exception instanceof \Illuminate\Database\QueryException) {
+                return response()->json([
+                    'data' => [
+                        'error' => $exception->getMessage()
+                    ]
+                ], 500);
+            }
         }
         return parent::render($request, $exception);
     }

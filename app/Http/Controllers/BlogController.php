@@ -13,23 +13,16 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 class BlogController extends Controller
 {
     public function index() {
-//        $blogs = Blog::latestFirst()->get();
-
-        $blogs = Blog::latestFirst()->paginate(3);
-        $blogsCollection = $blogs->getCollection();
+//        $blogs = Blog::latestFirst()->paginate(3);
+        $blogs = Blog::latestFirst()->get();
+//        $blogsCollection = $blogs->getCollection();
 
         return fractal()
-            ->collection($blogsCollection)
+            ->collection($blogs)
             ->parseIncludes(['user'])
             ->transformWith(new BlogTransformer)
-            ->paginateWith(new IlluminatePaginatorAdapter($blogs))
+//            ->paginateWith(new IlluminatePaginatorAdapter($blogs))
             ->toArray();
-
-//        return fractal()
-//            ->collection($blogs)
-//            ->parseIncludes(['user'])
-//            ->transformWith(new BlogTransformer)
-//            ->toArray();
     }
 
     public function show(Blog $blog) {
@@ -41,20 +34,28 @@ class BlogController extends Controller
             ->toArray();
     }
 
+    public function latest() {
+
+        $blog = Blog::latest('created_at')->first();
+
+        return fractal()
+            ->item($blog)
+            ->transformWith(new BlogTransformer)
+            ->toArray();
+    }
+
     public function store(StoreBlogRequest $request) {
         $blog = new Blog;
         $blog->title = $request->title;
         $blog->image = $request->image;
         $blog->description = $request->description;
+        $blog->body = $request->body;
+        $blog->author = $request->author;
+        $blog->url = $request->url;
 
         $blog->user()->associate($request->user());
 
-        $post = new Post;
-        $post->body = $request->body;
-        $post->user()->associate($request->user());
-
         $blog->save();
-        $blog->posts()->save($post);
 
         return fractal()
             ->item($blog)
@@ -68,6 +69,9 @@ class BlogController extends Controller
         $blog->title = $request->get('title', $blog->title);
         $blog->image = $request->get('image', $blog->image);
         $blog->description = $request->get('description', $blog->description);
+        $blog->body = $request->get('body', $blog->body);
+        $blog->author = $request->get('author', $blog->author);
+        $blog->url = $request->get('url', $blog->url);
         $blog->save();
 
         return fractal()

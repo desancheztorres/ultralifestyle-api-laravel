@@ -24,8 +24,12 @@ class UpdateBodyPartRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'description' => 'required',
+            'title' => 'required|max:255',
+            'image' => 'required',
+            'description' => 'required|max:2000',
+            'body' => 'required',
+            'author' => 'required',
+            'url' => 'nullable',
         ];
     }
 }

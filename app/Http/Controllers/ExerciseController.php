@@ -7,16 +7,19 @@ use App\Models\Exercise;
 use App\Transformers\ExerciseTransformer;
 use App\Http\Requests\StoreExerciseRequest;
 use App\Http\Requests\UpdateExerciseRequest;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class ExerciseController extends Controller
 {
     public function index() {
-        $exercises = Exercise::latestFirst()->get();
+        $exercises = Exercise::alphabeticalOrder()->paginate(20);
+        $exercisesCollection = $exercises->getCollection();
 
         return fractal()
-            ->collection($exercises)
+            ->collection($exercisesCollection)
             ->parseIncludes(['user', 'body_part'])
             ->transformWith(new ExerciseTransformer)
+            ->paginateWith(new IlluminatePaginatorAdapter($exercises))
             ->toArray();
 
     }

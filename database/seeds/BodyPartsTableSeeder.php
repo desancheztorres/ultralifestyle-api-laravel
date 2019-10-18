@@ -11,12 +11,13 @@ class BodyPartsTableSeeder extends Seeder
      */
     public function run()
     {
-        $bodyPartsList = ["Any body part", "Core", "Arms", "Back", "Chest", "Legs", "Shoulders", "Other", "Olympic", "Full body", "Cardio"];
+        $json = File::get("database/data/body_parts.json");
+        $bodyParts = json_decode($json);
 
-        foreach ($bodyPartsList as $item) {
+        foreach ($bodyParts as $item) {
             DB::table('body_parts')->insert([
                 'name' => $name = $item,
-                'description' => "Description for " . $name,
+                'image' => strtolower(str_replace(' ', '_', $name).'.png'),
             ]);
         }
     }

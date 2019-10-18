@@ -43,10 +43,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function isActive() {
-        return $this->status ? true : false;
-    }
-
     public function hasLikedPost(Post $post) {
         return $post->likes->where('user_id', $this->id)->count() === 1;
     }
@@ -85,5 +81,13 @@ class User extends Authenticatable
 
     public function OauthAcessToken(){
         return $this->hasMany('\App\Models\OauthAccessToken');
+    }
+
+    public function routine() {
+        return $this->hasOne(Routine::class);
+    }
+
+    public function heights() {
+        $this->hasMany(Weight::class);
     }
 }

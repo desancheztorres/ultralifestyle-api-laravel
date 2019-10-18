@@ -57,4 +57,13 @@ class RecipeController extends Controller
 
         return response(null, 204);
     }
+
+    public function category($category) {
+        $recipes = Recipe::where('category_id', $category)->get();
+
+        return fractal()
+            ->collection($recipes)
+            ->transformWith(new RecipeTransformer)
+            ->toArray();
+    }
 }

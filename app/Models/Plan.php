@@ -14,6 +14,10 @@ class Plan extends Model
         return $this->belongsToMany("App\Models\Exercise")->withPivot('sets', 'reps', 'week_day_id');
     }
 
+    public function recipes() {
+        return $this->belongsToMany("App\Models\Recipe")->withPivot('week_day_id');
+    }
+
     public function user() {
         return $this->belongsTo('App\Models\User');
     }
