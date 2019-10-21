@@ -13,7 +13,7 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 class RecipeCategoryController extends Controller
 {
     public function index() {
-        $categories = RecipeCategory::latestFirst()->get();
+        $categories = RecipeCategory::get();
 
         return fractal()
             ->collection($categories)
@@ -32,7 +32,6 @@ class RecipeCategoryController extends Controller
         $recipeCategory = new RecipeCategory;
         $recipeCategory->name = $request->name;
         $recipeCategory->slug = str_slug($request->name);
-        $recipeCategory->description = $request->description;
         $recipeCategory->image = $request->image;
 
         $recipeCategory->save();
@@ -47,7 +46,6 @@ class RecipeCategoryController extends Controller
         $recipeCategory->name = $request->get('name', $recipeCategory->name);
         $recipeCategory->slug = str_slug($request->name);
         $recipeCategory->image = $request->get('image', $recipeCategory->image);
-        $recipeCategory->description = $request->get('description', $recipeCategory->description);
         $recipeCategory->save();
 
         return fractal()

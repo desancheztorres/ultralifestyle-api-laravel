@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
 //        $this->call(BodyPartsTableSeeder::class);
 //        $this->call(RecipeCategoriesTableSeeder::class);
 //        $this->call(PlansTableSeeder::class);
+        $this->call(ExperienceLevelsTableSeeder::class);
 //        $this->call(WeekDaysTableSeeder::class);
 //        $this->call(ExercisesTableSeeder::class);
 //        $this->call(BodyPartsTableSeeder::class);

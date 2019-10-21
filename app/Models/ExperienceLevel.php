@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Ethnic extends Model
+class ExperienceLevel extends Model
 {
-    protected $fillable = ['name'];
 
     public $timestamps = false;
 

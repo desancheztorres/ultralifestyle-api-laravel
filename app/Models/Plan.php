@@ -17,8 +17,4 @@ class Plan extends Model
     public function recipes() {
         return $this->belongsToMany("App\Models\Recipe")->withPivot('week_day_id');
     }
-
-    public function user() {
-        return $this->belongsTo('App\Models\User');
-    }
 }

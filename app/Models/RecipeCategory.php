@@ -10,6 +10,7 @@ class RecipeCategory extends Model
     use Orderable;
 
     protected $fillable = ['name', 'description', 'image'];
+    public $timestamps = false;
 
     public function recipes() {
         $this->hasMany(Recipe::class);

@@ -6,3 +6,4 @@
 [25-Aug-2019 16:49:49 UTC] PHP Fatal error:  Class 'App\Http\Requests\FormRequest' not found in /home/msportalultra/public_html/ultralifestyle/app/Http/Requests/StoreBlogRequest.php on line 6
 [26-Aug-2019 14:21:50 UTC] PHP Fatal error:  Class 'App\Http\Requests\FormRequest' not found in /home/msportalultra/public_html/ultralifestyle/app/Http/Requests/UpdateTopicRequest.php on line 5
 [26-Aug-2019 15:16:58 UTC] PHP Fatal error:  Trait 'App\Models\Orderable' not found in /home/msportalultra/public_html/ultralifestyle/app/Models/Routine.php on line 9
+[21-Oct-2019 08:10:33 UTC] PHP Fatal error:  Access level to App\Models\Ethnic::$timestamps must be public (as in class Illuminate\Database\Eloquent\Model) in /home/msportalultra/public_html/ultralifestyle/app/Models/Ethnic.php on line 16

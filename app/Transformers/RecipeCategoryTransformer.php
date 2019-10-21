@@ -17,9 +17,7 @@ class RecipeCategoryTransformer extends TransformerAbstract
         return [
             'id' => $recipeCategory->id,
             'name' => $recipeCategory->name,
-            'slug' => $recipeCategory->slug,
             'image' => $recipeCategory->image,
-            'description' => $recipeCategory->description,
         ];
     }
 }

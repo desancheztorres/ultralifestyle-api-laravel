@@ -27,4 +27,8 @@ class Profile extends Model
     public function target() {
         return $this->belongsTo(Target::class);
     }
+
+    public function level() {
+        return $this->belongsTo(ExperienceLevel::class);
+    }
 }

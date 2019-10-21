@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BodyPart;
 use App\Transformers\BodyPartTransformer;
-use App\Http\Requests\UpdateBodyPartRequest;
+use App\Http\Requests\{StoreBodyPartRequest, UpdateBodyPartRequest};
 
 class BodyPartController extends Controller
 {
@@ -25,11 +25,11 @@ class BodyPartController extends Controller
             ->toArray();
     }
 
-    public function store(UpdateBodyPartRequest $request) {
+    public function store(StoreBodyPartRequest $request) {
         $bodyPart = new BodyPart();
 
         $bodyPart->name = $request->name;
-        $bodyPart->description = $request->description;
+        $bodyPart->image = $request->image;
         $bodyPart->save();
 
         return fractal()
@@ -40,7 +40,7 @@ class BodyPartController extends Controller
 
     public function update(UpdateBodyPartRequest $request, BodyPart $bodyPart) {
         $bodyPart->name = $request->get('name', $bodyPart->name);
-        $bodyPart->description = $request->get('description', $bodyPart->description);
+        $bodyPart->image = $request->get('image', $bodyPart->image);
         $bodyPart->save();
 
         return fractal()

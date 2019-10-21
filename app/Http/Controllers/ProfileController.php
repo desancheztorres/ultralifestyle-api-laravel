@@ -25,6 +25,12 @@ class ProfileController extends Controller
     private $calories;
     private $bmr;
 
+    public function index() {
+        $profiles = Profile::get();
+
+        dd($profiles);
+    }
+
     public function show() {
 
         $userId = Auth::guard('api')->id();

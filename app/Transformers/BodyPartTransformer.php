@@ -17,7 +17,7 @@ class BodyPartTransformer extends TransformerAbstract
         return [
             'id' => $bodyPart->id,
             'name' => $bodyPart->name,
-            'description' => $bodyPart->description,
+            'image' => $bodyPart->image,
         ];
     }
 }

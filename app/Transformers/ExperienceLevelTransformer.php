@@ -3,20 +3,19 @@
 namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
-use App\Models\Ethnic;
+use App\Models\ExperienceLevel;
 
-class EthnicTransformer extends TransformerAbstract
+class ExperienceLevelTransformer extends TransformerAbstract
 {
     /**
      * A Fractal transformer.
      *
      * @return array
      */
-    public function transform(Ethnic $ethnic)
+    public function transform(ExperienceLevel $level)
     {
         return [
-            'id' => $ethnic->id,
-            'name' => $ethnic->name
+            'name' => $level->name
         ];
     }
 }

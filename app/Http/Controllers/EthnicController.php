@@ -30,6 +30,7 @@ class EthnicController extends Controller
         $ethnic = new Ethnic;
 
         $ethnic->name = $request->name;
+        $ethnic->slug = str_slug($request->name);
         $ethnic->save();
 
         return fractal()
@@ -41,6 +42,7 @@ class EthnicController extends Controller
     public function update(UpdateEthnicRequest $request, Ethnic $ethnic) {
 
         $ethnic->name = $request->get('name', $ethnic->name);
+        $ethnic->slug = str_slug($request->get('name', $ethnic->name));
         $ethnic->save();
 
         return fractal()

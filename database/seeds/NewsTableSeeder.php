@@ -19,11 +19,10 @@ class NewsTableSeeder extends Seeder
             DB::table('blogs')->insert([
                 'title' => $obj->title,
                 'image' => $obj->image,
-                'description' => "",
-                'body' => "",
+                'description' => $obj->description,
+                'body' => $obj->body,
                 'author' => $obj->author,
                 'url' => $obj->url,
-                'user_id' => 1,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ]);

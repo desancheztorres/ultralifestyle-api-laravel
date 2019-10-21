@@ -26,7 +26,6 @@ class StoreRecipeCategoryRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             'image' => 'required',
-            'description' => 'required|max:2000',
         ];
     }
 }

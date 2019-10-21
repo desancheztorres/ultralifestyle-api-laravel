@@ -23,6 +23,7 @@ use App\Models\User;
     14. TARGETS
     15. GENDERS
     16. ETHNICS
+    17. EXPERIENCE LEVEL
 */
 
 /*
@@ -39,8 +40,9 @@ Route::post('/register', 'RegisterController@register');
 ------------------------------------------------------------------------------------------------------------------------
 */
 
-Route::group(['prefix' => 'profile'], function () {
-    Route::get('/', 'ProfileController@show')->middleware('auth:api');
+Route::group(['prefix' => 'profiles'], function () {
+    Route::get('/', 'ProfileController@index')->middleware('auth:api');
+    Route::get('/show', 'ProfileController@show')->middleware('auth:api');
     Route::get('/active', 'ProfileController@active')->middleware('auth:api');
     Route::post('/', 'ProfileController@store')->middleware('auth:api');
     Route::patch('/user/update/', 'ProfileController@update')->middleware('auth:api');
@@ -49,13 +51,15 @@ Route::group(['prefix' => 'profile'], function () {
 
 /*
 ------------------------------------------------------------------------------------------------------------------------
------------------------------------------- USER ------------------------------------------------------------------------
+------------------------------------------ USERS ------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
 */
 
-Route::group(['prefix' => 'user'], function () {
-    Route::get('/routine', 'UserController@routine')->middleware('auth:api');
+Route::group(['prefix' => 'users'], function () {
+    Route::get('/', 'UserController@index')->middleware('auth:api');
+    Route::get('/show/{user}', 'UserController@show')->middleware('auth:api');
     Route::get('/info', 'UserController@info')->middleware('auth:api');
+    Route::patch('/{user}','UserController@update');
     Route::post('/logout','UserController@logoutApi');
 });
 
@@ -73,17 +77,17 @@ Route::group(['prefix' => 'blogs'], function() {
     Route::patch('/{blog}', 'BlogController@update')->middleware('auth:api');
     Route::delete('/{blog}', 'BlogController@destroy')->middleware('auth:api');
 
-    Route::group(['prefix' => '/{blog}/posts'], function () {
-        Route::post('/', 'PostController@store')->middleware('auth:api');
-        Route::patch('/{post}', 'PostController@update')->middleware('auth:api');
-        Route::delete('/{post}', 'PostController@destroy')->middleware('auth:api');
-
-        Route::group(['prefix' => '/{post}/likes'], function () {
-            Route::post('/', 'PostLikeController@store')->middleware('auth:api');
-//            Route::delete('/{post}', 'PostLikeController@destroy')->middleware('auth:api');
-        });
-
-    });
+//    Route::group(['prefix' => '/{blog}/posts'], function () {
+//        Route::post('/', 'PostController@store')->middleware('auth:api');
+//        Route::patch('/{post}', 'PostController@update')->middleware('auth:api');
+//        Route::delete('/{post}', 'PostController@destroy')->middleware('auth:api');
+//
+//        Route::group(['prefix' => '/{post}/likes'], function () {
+//            Route::post('/', 'PostLikeController@store')->middleware('auth:api');
+////            Route::delete('/{post}', 'PostLikeController@destroy')->middleware('auth:api');
+//        });
+//
+//    });
 });
 
 /*
@@ -264,4 +268,18 @@ Route::group(['prefix' => 'ethnics'], function() {
     Route::post('/', 'EthnicController@store')->middleware('auth:api');
     Route::patch('/{ethnic}', 'EthnicController@update')->middleware('auth:api');
     Route::delete('/{ethnic}', 'EthnicController@destroy')->middleware('auth:api');
+});
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------ EXPERIENCE LEVEL ------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+*/
+
+Route::group(['prefix' => 'experience-levels'], function() {
+    Route::get('/', 'ExperienceLevelController@index')->middleware('auth:api');
+    Route::get('/{level}', 'ExperienceLevelController@show')->middleware('auth:api');
+    Route::post('/', 'ExperienceLevelController@store')->middleware('auth:api');
+    Route::patch('/{level}', 'ExperienceLevelController@update')->middleware('auth:api');
+    Route::delete('/{level}', 'ExperienceLevelController@destroy')->middleware('auth:api');
 });
