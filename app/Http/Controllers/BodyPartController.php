@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BodyPart;
 use App\Transformers\BodyPartTransformer;
-use App\Http\Requests\{StoreBodyPartRequest, UpdateBodyPartRequest};
+use App\Http\Requests\BodyPart\{StoreBodyPartRequest, UpdateBodyPartRequest};
 
 class BodyPartController extends Controller
 {

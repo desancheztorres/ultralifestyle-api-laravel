@@ -9,8 +9,12 @@ class Exercise extends Model
 {
     use Orderable;
 
+    public function workouts() {
+        return $this->hasMany(WorkoutHistory::class);
+    }
+
     public function routines() {
-        return $this->belongsToMany('App\Models\Routine')->withPivot('sets', 'reps', 'week_day_id')->withTimestamps();
+        return $this->belongsToMany('App\Models\Routine')->withPivot('sets', 'reps', 'kg', 'time', 'completed', 'order', 'week_day_id')->withTimestamps();
     }
 
     public function plans() {
@@ -21,7 +25,4 @@ class Exercise extends Model
         return $this->belongsToMany('App\Models\BodyPart');
     }
 
-    public function weekday() {
-        return $this->belongsTo('App\Models\WeekDay');
-    }
 }

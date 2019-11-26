@@ -18,15 +18,10 @@ class DatabaseSeeder extends Seeder
 //        $this->call(BodyPartsTableSeeder::class);
 //        $this->call(RecipeCategoriesTableSeeder::class);
 //        $this->call(PlansTableSeeder::class);
-        $this->call(ExperienceLevelsTableSeeder::class);
-//        $this->call(WeekDaysTableSeeder::class);
-//        $this->call(ExercisesTableSeeder::class);
-//        $this->call(BodyPartsTableSeeder::class);
-//        $this->call(PlanTableSeeder::class);
-//        $this->call(ExercisePlanTableSeeder::class);
+//        $this->call(ExperienceLevelsTableSeeder::class);
 //        $this->call(NewsTableSeeder::class);
-//        $this->call(RecipeCategoryTableSeeder::class);
+//        $this->call(ExercisesTableSeeder::class);
+//        $this->call(WeekDaysTableSeeder::class);
 //        $this->call(RecipeTableSeeder::class);
-//        $this->call(RecipePlanTableSeeder::class);
     }
 }

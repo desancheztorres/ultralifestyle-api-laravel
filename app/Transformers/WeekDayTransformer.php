@@ -17,6 +17,7 @@ class WeekDayTransformer extends TransformerAbstract
         return [
             'id' => $weekDay->id,
             'name' => $weekDay->name,
+            'day_number' => $weekDay->day_number,
         ];
     }
 }

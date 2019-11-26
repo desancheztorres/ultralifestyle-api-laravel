@@ -16,7 +16,7 @@ class NewsTableSeeder extends Seeder
 
         foreach ($data as $obj) {
 
-            DB::table('blogs')->insert([
+            DB::table('news')->insert([
                 'title' => $obj->title,
                 'image' => $obj->image,
                 'description' => $obj->description,

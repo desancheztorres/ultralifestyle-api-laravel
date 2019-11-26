@@ -13,9 +13,15 @@ class WeekDaysTableSeeder extends Seeder
     {
         $days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
+        $day_number = 0;
+
         foreach ($days as $day) {
+            
+            $day_number++;
+
             DB::table('week_days')->insert([
                 'name' => $day,
+                'day_number' => $day_number,
             ]);
         }
     }

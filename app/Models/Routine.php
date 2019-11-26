@@ -9,18 +9,15 @@ class Routine extends Model
 {
     use Orderable;
 
-    protected $fillable = ['name', 'description'];
-
     public function user() {
         return $this->belongsTo(User::class);
     }
 
     public function exercises() {
-        return $this->belongsToMany('App\Models\Exercise');
+        return $this->belongsToMany(Exercise::class)->withPivot('sets', 'reps', 'kg', 'time', 'completed', 'order', 'week_day_id')->withTimestamps();
     }
 
     public function recipes() {
-        return $this->belongsToMany('App\Models\Recipe');
+        return $this->belongsToMany(Recipe::class);
     }
-    
 }

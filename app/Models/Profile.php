@@ -16,10 +16,6 @@ class Profile extends Model
         return $this->status ? true : false;
     }
 
-    public function gender() {
-        return $this->belongsTo(Gender::class);
-    }
-
     public function ethnic() {
         return $this->belongsTo(Ethnic::class);
     }

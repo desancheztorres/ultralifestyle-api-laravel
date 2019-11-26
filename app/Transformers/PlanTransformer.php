@@ -7,7 +7,7 @@ use App\Models\Plan;
 
 class PlanTransformer extends TransformerAbstract
 {
-    protected $defaultIncludes = ['user', 'exercises'];
+    protected $defaultIncludes = ['exercises'];
     /**
      * A Fractal transformer.
      *
@@ -17,15 +17,15 @@ class PlanTransformer extends TransformerAbstract
     {
         return [
             'id' => $plan->id,
-            'title' => $plan->name,
+            'name' => $plan->name,
+            'image' => $plan->image,
             'description' => $plan->description,
+            'goal' => $plan->goal,
+            'days_week' => $plan->days_week,
+            'avg_time' => $plan->avg_time,
             'created_at' => $plan->created_at->toDateTimeString(),
             'created_at_human' => $plan->created_at->diffForHumans(),
         ];
-    }
-
-    public function includeUser(Plan $plan) {
-        return $this->item($plan->user, new UserTransformer);
     }
 
     public function includeExercises(Plan $plan) {

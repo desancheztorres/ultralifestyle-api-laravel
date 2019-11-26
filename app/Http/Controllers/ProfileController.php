@@ -5,30 +5,22 @@ namespace App\Http\Controllers;
 use Auth;
 use DB;
 use Illuminate\Http\Request;
-use App\Models\Profile;
-use App\Models\User;
 use App\Transformers\ProfileTransformer;#
-use App\Http\Requests\StoreProfileRequest;
-use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Requests\Profile\{StoreProfileRequest, UpdateProfileRequest};
 use App\Policies\ProfilePolicy;
-use App\Models\Routine;
-use App\Models\Plan;
-use App\Models\Exercise;
+use App\Models\{User, Profile, Routine, Plan, Exercise, Target, Gender};
 use Carbon\Carbon;
-
+use App\Library\{Nutrition as MyNutrition, BodyMetric};
 
 class ProfileController extends Controller
 {
-    private $protein;
-    private $fat;
-    private $carb;
-    private $calories;
-    private $bmr;
-
     public function index() {
         $profiles = Profile::get();
 
-        dd($profiles);
+        return fractal()
+            ->collection($profiles)
+            ->transformWith(new ProfileTransformer)
+            ->toArray();
     }
 
     public function show() {
@@ -44,51 +36,53 @@ class ProfileController extends Controller
     }
 
     public function store(StoreProfileRequest $request) {
-        $profile = new Profile();
+        $profile = new Profile;
 
         $this->authorize('profile', $profile);
 
         $height = $request->get('height');
         $weight = $request->get('weight');
-        $bmi = $this->calculateBmi(false, $weight, $height);
+        $gender = $request->get('gender');
         $age = Carbon::parse($request->dob)->age;
-        $bmr = $this->calculateBMR($request->gender, $age, $height, $weight);
-        $this->bmr = $bmr;
 
-        switch($request->get('target')) {
-            case "Lose Weight":
-                $this->checkTarget(.50, .30, .20, -300);
+        $nutrition = new MyNutrition();
+        $bodyMetric = new BodyMetric($gender, $age, $height, $weight);
+
+        $bmi = $bodyMetric->getBmi();
+        $bmr = $bodyMetric->getBmr();
+
+        $target = Target::where('id', $request->target_id)->first();
+
+        switch($target->type) {
+            case "lw":
+                $nutrition->setNutritionValues(.50, .30, .20, -300, $bmr);
                 break;
-            case "Build Muscle":
-                $this->checkTarget(.40, .20, .40, 300);
+            case "bm":
+                $nutrition->setNutritionValues(.40, .20, .40, 300, $bmr);
                 break;
-            case "Maintenance":
-                $this->checkTarget(.40, .30, .20, 0);
+            case "m":
+                $nutrition->setNutritionValues(.40, .30, .20, 0, $bmr);
                 break;
             default :
-                $this->checkTarget(.20, .20, .20, 0);
+                $nutrition->setNutritionValues(.20, .20, .20, 0, $bmr);
         }
 
         $profile->dob = $request->dob;
-        $profile->height = $request->height;
-        $profile->weight = $request->weight;
-        $profile->gender_id = $request->gender_id;
+        $profile->height = $height;
+        $profile->weight = $weight;
+        $profile->gender = $request->gender;
         $profile->ethnic_id = $request->ethnic_id;
         $profile->target_id = $request->target_id;
         $profile->user()->associate($request->user());
         $profile->bmi = (float) number_format($bmi, 2, '.', ',');
         $profile->bmr = $bmr;
-        $profile->calories = $this->calories;
+        $profile->calories = $nutrition->getCalories();
         $profile->calories_used = 0;
-        $profile->protein = $this->protein;
-        $profile->fat = $this->fat;
-        $profile->carb = $this->carb;
+        $profile->protein = $nutrition->getProtein();
+        $profile->fat = $nutrition->getFat();
+        $profile->carb = $nutrition->getCarb();
 
         $profile->save();
-
-        $target = $profile->target;
-
-        $this->createUserRoutine($target);
 
         return fractal()
             ->item($profile)
@@ -106,40 +100,45 @@ class ProfileController extends Controller
 
         $height = $request->get('height');
         $weight = $request->get('weight');
-        $gender = $request->get('gender', $profile->gender);
+        $gender = $request->get('gender');
         $dob = $request->get('dob', $profile->dob);
-        $target = $request->get('target', $profile->target);
         $age = Carbon::parse($dob)->age;
-        $bmi = $this->calculateBmi(false, $weight, $height);
-        $bmr = $this->calculateBMR($request->gender, $age, $height, $weight);
-        $this->bmr = $bmr;
 
-        switch($target) {
-            case "Lose Weight":
-                $this->checkTarget(.50, .30, .20, -300);
+        $nutrition = new MyNutrition();
+        $bodyMetric = new BodyMetric($gender, $age, $height, $weight);
+
+        $bmi = $bodyMetric->getBmi();
+        $bmr = $bodyMetric->getBmr();
+
+
+        $target = Target::where('id', $request->target_id)->first();
+
+        switch($target->type) {
+            case "lw":
+                $nutrition->setNutritionValues(.50, .30, .20, -300, $bmr);
                 break;
-            case "Build Muscle":
-                $this->checkTarget(.40, .20, .40, 300);
+            case "bm":
+                $nutrition->setNutritionValues(.40, .20, .40, 300, $bmr);
                 break;
-            case "Maintenance":
-                $this->checkTarget(.40, .30, .20, 0);
+            case "m":
+                $nutrition->setNutritionValues(.40, .30, .20, 0, $bmr);
                 break;
             default :
-                $this->checkTarget(.20, .20, .20, 0);
+                $nutrition->setNutritionValues(.20, .20, .20, 0, $bmr);
         }
 
         $profile->dob = $dob;
         $profile->height = $request->get('height', $profile->height);
         $profile->weight = $request->get('weight', $profile->weight);
         $profile->gender = $gender;
-        $profile->ethnic = $request->get('ethnic', $profile->ethnic);
-        $profile->target = $target;
-        $profile->bmi = number_format($bmi, 2, '.', ',');
+        $profile->ethnic_id = $request->get('ethnic_id', $profile->ethnic->id);
+        $profile->target_id = $target->id;
+        $profile->bmi = $bmi;
         $profile->bmr = $bmr;
-        $profile->calories = $this->calories;
-        $profile->protein = $this->protein;
-        $profile->fat = $this->fat;
-        $profile->carb = $this->carb;
+        $profile->calories = $nutrition->getCalories();
+        $profile->protein = $nutrition->getProtein();
+        $profile->fat = $nutrition->getFat();
+        $profile->carb = $nutrition->getCarb();
         $profile->save();
 
         return fractal()
@@ -201,41 +200,6 @@ class ProfileController extends Controller
         
         $routine->exercises()->sync($exercisesList);
         $routine->recipes()->sync($recipesList);
-    }
-
-    private function checkTarget($protein, $carb, $fat, $calories) {
-        $this->protein = round(($this->bmr * $protein) / 4);
-        $this->fat = round(($this->bmr * $carb) / 9);
-        $this->carb = round(($this->bmr * $fat) / 4);
-        $this->calories = $this->bmr + ($calories);
-    }
-
-    private function calculateBmi($inCm, $weight, $height) {
-        $bmi = (($weight / $height) / $height);
-
-        if($inCm) {
-            $bmi *= 10000;
-        }
-
-        return $bmi;
-    }
-
-    private function calculateBMR($gender, $age, $height, $weight) {
-
-        switch($gender) {
-            case "male":
-                $bmr = 66.4730 + (13.7516 * $weight) + (5.0033 * $height) - (6.7550 * $age);
-                break;
-            case "female":
-                $bmr = 655.0955 + (9.5634 * $weight) + (1.8496 * $height) - (4.6756 * $age);
-                break;
-            default:
-                $bmr = 66 + (13.7 * $weight) + (5 * $height) - (6.75 * $age);
-        }
-
-        $calories = (int) number_format($bmr, 0,'.', '');
-
-        return $calories;
     }
 
     public function active() {

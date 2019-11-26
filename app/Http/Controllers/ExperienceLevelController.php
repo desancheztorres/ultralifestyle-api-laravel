@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ExperienceLevel;
-use App\Http\Requests\{StoreExperienceLevelRequest, UpdateExperienceLevelRequest};
+use App\Http\Requests\ExperienceLevel\{StoreExperienceLevelRequest, UpdateExperienceLevelRequest};
 use App\Transformers\ExperienceLevelTransformer;
 
 class ExperienceLevelController extends Controller

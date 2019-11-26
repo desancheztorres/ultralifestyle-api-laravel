@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Exercise;
 use App\Transformers\ExerciseTransformer;
-use App\Http\Requests\StoreExerciseRequest;
-use App\Http\Requests\UpdateExerciseRequest;
+use App\Http\Requests\Exercise\{StoreExerciseRequest, UpdateExerciseRequest};
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class ExerciseController extends Controller

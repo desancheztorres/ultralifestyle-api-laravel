@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Target;
 use App\Transformers\TargetTransformer;
-use App\Http\Requests\{StoreTargetRequest, UpdateTargetRequest};
+use App\Http\Requests\Target\{StoreTargetRequest, UpdateTargetRequest};
 
 class TargetController extends Controller
 {

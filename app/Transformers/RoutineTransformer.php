@@ -7,7 +7,6 @@ use App\Models\Routine;
 
 class RoutineTransformer extends TransformerAbstract
 {
-    protected $defaultIncludes = ['user'];
     /**
      * A Fractal transformer.
      *
@@ -17,6 +16,12 @@ class RoutineTransformer extends TransformerAbstract
     {
         return [
             'id' => $routine->id,
+            'name' => $routine->name,
+            'image' => $routine->image,
+            'description' => $routine->description,
+            'goal' => $routine->goal,
+            'days_week' => $routine->days_week,
+            'avg_time' => $routine->avg_time,
             'created_at' => $routine->created_at->toDateTimeString(),
             'created_at_human' => $routine->created_at->diffForHumans(),
         ];

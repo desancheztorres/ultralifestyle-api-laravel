@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\RecipeCategory;
 use App\Transformers\RecipeCategoryTransformer;
-use App\Http\Requests\StoreRecipeCategoryRequest;
-use App\Http\Requests\UpdateRecipeCategoryRequest;
+use App\Http\Requests\RecipeCategory\{StoreRecipeCategoryRequest, UpdateRecipeCategoryRequest};
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 

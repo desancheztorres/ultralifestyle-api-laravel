@@ -15,6 +15,7 @@ class ExperienceLevelTransformer extends TransformerAbstract
     public function transform(ExperienceLevel $level)
     {
         return [
+            'id' => $level->id,
             'name' => $level->name
         ];
     }

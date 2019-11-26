@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Weight;
-use App\Http\Requests\StoreWeightRequest;
+use App\Http\Requests\Weight\StoreWeightRequest;
 use App\Transformers\WeightTransformer;
 use Auth;
 

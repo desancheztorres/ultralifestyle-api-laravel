@@ -10,7 +10,7 @@ use App\Models\User;
     1. REGISTER
     2. PROFILE
     3. USER
-    4. BLOGS
+    4. NEWS
     5. PLANS
     6. ROUTINES
     7. BODY-PARTS
@@ -24,6 +24,8 @@ use App\Models\User;
     15. GENDERS
     16. ETHNICS
     17. EXPERIENCE LEVEL
+    18. WORKOUTS
+    19. WORKOUTS HISTORY
 */
 
 /*
@@ -65,17 +67,17 @@ Route::group(['prefix' => 'users'], function () {
 
 /*
 ------------------------------------------------------------------------------------------------------------------------
------------------------------------------- BLOGS -----------------------------------------------------------------------
+------------------------------------------ NEWS -----------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
 */
 
-Route::group(['prefix' => 'blogs'], function() {
-    Route::get('/', 'BlogController@index')->middleware('auth:api');
-    Route::get('/{blog}', 'BlogController@show')->middleware('auth:api');
-    Route::get('/blog/latest', 'BlogController@latest')->middleware('auth:api');
-    Route::post('/', 'BlogController@store')->middleware('auth:api');
-    Route::patch('/{blog}', 'BlogController@update')->middleware('auth:api');
-    Route::delete('/{blog}', 'BlogController@destroy')->middleware('auth:api');
+Route::group(['prefix' => 'news'], function() {
+    Route::get('/', 'NewsController@index')->middleware('auth:api');
+    Route::get('/{news}', 'NewsController@show')->middleware('auth:api');
+    Route::get('/show/latest', 'NewsController@latest')->middleware('auth:api');
+    Route::post('/', 'NewsController@store')->middleware('auth:api');
+    Route::patch('/{news}', 'NewsController@update')->middleware('auth:api');
+    Route::delete('/{news}', 'NewsController@destroy')->middleware('auth:api');
 
 //    Route::group(['prefix' => '/{blog}/posts'], function () {
 //        Route::post('/', 'PostController@store')->middleware('auth:api');
@@ -186,9 +188,6 @@ Route::group(['prefix' => 'recipe-categories'], function() {
 Route::group(['prefix' => 'weekdays'], function() {
     Route::get('/', 'WeekDaysController@index')->middleware('auth:api');
     Route::get('/{weekDay}', 'WeekDaysController@show')->middleware('auth:api');
-    Route::post('/', 'WeekDaysController@store')->middleware('auth:api');
-    Route::patch('/{weekDay}', 'WeekDaysController@update')->middleware('auth:api');
-    Route::delete('/{weekDay}', 'WeekDaysController@destroy')->middleware('auth:api');
 
     Route::group(['prefix' => '/{weekday}/exercises'], function () {
         Route::get('/', 'WeekDayExerciseController@show')->middleware('auth:api');
@@ -282,4 +281,29 @@ Route::group(['prefix' => 'experience-levels'], function() {
     Route::post('/', 'ExperienceLevelController@store')->middleware('auth:api');
     Route::patch('/{level}', 'ExperienceLevelController@update')->middleware('auth:api');
     Route::delete('/{level}', 'ExperienceLevelController@destroy')->middleware('auth:api');
+});
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------ WORKOUTS --------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+*/
+
+Route::group(['prefix' => 'workouts'], function() {
+    Route:: get('/', 'WorkoutController@index')->middleware('auth:api');
+    Route:: get('/{id}', 'WorkoutController@show')->middleware('auth:api');
+    Route:: get('/day/{day}', 'WorkoutController@showDaily')->middleware('auth:api');
+    Route:: get('/start/{day}', 'WorkoutController@start')->middleware('auth:api');
+    Route:: patch('/update/{day}/{exercise}', 'WorkoutController@update')->middleware('auth:api');
+});
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------ WORKOUTS HISTORY ------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+*/
+
+Route::group(['prefix' => 'workouts-history'], function() {
+    Route:: get('/', 'WorkoutHistoryController@index')->middleware('auth:api');
+    Route:: post('/', 'WorkoutHistoryController@store')->middleware('auth:api');
 });

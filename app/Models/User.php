@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Blog;
 use App\Models\Post;
-use App\Models\Routine;
+use App\Models\PlanUser;
 use App\Models\Profile;
 use App\Traits\Orderable;
 
@@ -43,10 +43,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function hasLikedPost(Post $post) {
-        return $post->likes->where('user_id', $this->id)->count() === 1;
-    }
-
     public function hasCreatedProfile() {
         return Profile::where('user_id', $this->id)->count() === 1;
     }
@@ -57,18 +53,6 @@ class User extends Authenticatable
 
     public function ownsProfile(Profile $profile) {
         return $this->id === $profile->user->id;
-    }
-
-    public function ownsPlans(Plan $plan) {
-        return $this->id === $plan->user->id;
-    }
-
-    public function ownsBlog(Blog $blog) {
-        return $this->id === $blog->user->id;
-    }
-
-    public function ownsPost(Post $post) {
-        return $this->id === $post->user->id;
     }
 
     public function ownsRoutines(Routine $routine) {
@@ -88,6 +72,10 @@ class User extends Authenticatable
     }
 
     public function heights() {
-        $this->hasMany(Weight::class);
+        return $this->hasMany(Weight::class);
+    }
+
+    public function workouts() {
+        return $this->hasMany(WorkoutHistory::class);
     }
 }

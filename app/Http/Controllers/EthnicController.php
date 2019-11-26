@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Ethnic;
 use App\Transformers\EthnicTransformer;
-use App\Http\Requests\{StoreEthnicRequest, UpdateEthnicRequest};
+use App\Http\Requests\Ethnic\{StoreEthnicRequest, UpdateEthnicRequest};
 
 
 class EthnicController extends Controller
