@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use Auth;
 use DB;
-use Illuminate\Http\Request;
-use App\Transformers\ProfileTransformer;#
+use App\Transformers\ProfileTransformer;
 use App\Http\Requests\Profile\{StoreProfileRequest, UpdateProfileRequest};
-use App\Policies\ProfilePolicy;
-use App\Models\{User, Profile, Routine, Plan, Exercise, Target, Gender};
+use App\Models\{Preference, Profile, Routine, Plan, Target, Gender, Avatar};
 use Carbon\Carbon;
 use App\Library\{Nutrition as MyNutrition, BodyMetric};
 
@@ -36,6 +34,7 @@ class ProfileController extends Controller
     }
 
     public function store(StoreProfileRequest $request) {
+
         $profile = new Profile;
 
         $this->authorize('profile', $profile);
@@ -43,24 +42,23 @@ class ProfileController extends Controller
         $height = $request->get('height');
         $weight = $request->get('weight');
         $gender = $request->get('gender');
+        $target = Target::where('type', $request->target)->first();
+        $preference = Preference::where('name', $request->preference)->first();
         $age = Carbon::parse($request->dob)->age;
 
         $nutrition = new MyNutrition();
         $bodyMetric = new BodyMetric($gender, $age, $height, $weight);
 
-        $bmi = $bodyMetric->getBmi();
         $bmr = $bodyMetric->getBmr();
-
-        $target = Target::where('id', $request->target_id)->first();
 
         switch($target->type) {
             case "lw":
                 $nutrition->setNutritionValues(.50, .30, .20, -300, $bmr);
                 break;
-            case "bm":
+            case "gs":
                 $nutrition->setNutritionValues(.40, .20, .40, 300, $bmr);
                 break;
-            case "m":
+            case "mw":
                 $nutrition->setNutritionValues(.40, .30, .20, 0, $bmr);
                 break;
             default :
@@ -70,11 +68,11 @@ class ProfileController extends Controller
         $profile->dob = $request->dob;
         $profile->height = $height;
         $profile->weight = $weight;
-        $profile->gender = $request->gender;
-        $profile->ethnic_id = $request->ethnic_id;
-        $profile->target_id = $request->target_id;
+        $profile->gender = $gender;
+        $profile->preference_id = $preference->id;
+        $profile->target_id = $target->id;
         $profile->user()->associate($request->user());
-        $profile->bmi = (float) number_format($bmi, 2, '.', ',');
+        $profile->bmi = $request->bmi;
         $profile->bmr = $bmr;
         $profile->calories = $nutrition->getCalories();
         $profile->calories_used = 0;
@@ -83,6 +81,8 @@ class ProfileController extends Controller
         $profile->carb = $nutrition->getCarb();
 
         $profile->save();
+
+        $profile->avatar()->save(new Avatar());
 
         return fractal()
             ->item($profile)
@@ -197,7 +197,7 @@ class ProfileController extends Controller
         $recipesList = array_combine($plansIds, $plansAttributes);
 
         $routine->save();
-        
+
         $routine->exercises()->sync($exercisesList);
         $routine->recipes()->sync($recipesList);
     }
@@ -205,26 +205,19 @@ class ProfileController extends Controller
     public function active() {
         $user = Auth::guard('api')->user();
 
-        if($user != null) {
-            if($user->profile) {
-                return response()->json([
-                    'data' => [
-                        'status' => $user->profile->isActive() ? "activated" : "inactive"
-                    ]
-                ], 200);
-            } else {
-                return response()->json([
-                    'data' => [
-                        'status' => 'inactive'
-                    ]
-                ], 404);
-            }
+        if($user->hasCreatedProfile()) {
+            return response()->json([
+                'data' => [
+                    'status' => "activated"
+                ]
+            ], 200);
         } else {
             return response()->json([
                 'data' => [
-                    'error' => 'Unauthorized'
+                    'status' => 'inactive'
                 ]
-            ], 403);
+            ], 404);
         }
+
     }
 }

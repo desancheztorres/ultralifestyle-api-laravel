@@ -29,6 +29,7 @@ class StoreNewsRequest extends FormRequest
             'description' => 'required|max:2000',
             'body' => 'required',
             'author' => 'required',
+            'author_image' => 'required',
             'url' => 'nullable',
 
         ];

@@ -28,8 +28,8 @@ class StoreProfileRequest extends FormRequest
             'height' => 'required',
             'weight' => 'required',
             'gender' => 'required',
-            'ethnic_id' => 'required',
-            'target_id' => 'required',
+            'target' => 'required',
+            'preference' => 'required',
         ];
     }
 }

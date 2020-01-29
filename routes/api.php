@@ -26,6 +26,7 @@ use App\Models\User;
     17. EXPERIENCE LEVEL
     18. WORKOUTS
     19. WORKOUTS HISTORY
+    20. AVATARS
 */
 
 /*
@@ -290,11 +291,11 @@ Route::group(['prefix' => 'experience-levels'], function() {
 */
 
 Route::group(['prefix' => 'workouts'], function() {
-    Route:: get('/', 'WorkoutController@index')->middleware('auth:api');
-    Route:: get('/{id}', 'WorkoutController@show')->middleware('auth:api');
-    Route:: get('/day/{day}', 'WorkoutController@showDaily')->middleware('auth:api');
-    Route:: get('/start/{day}', 'WorkoutController@start')->middleware('auth:api');
-    Route:: patch('/update/{day}/{exercise}', 'WorkoutController@update')->middleware('auth:api');
+    Route::get('/', 'WorkoutController@index')->middleware('auth:api');
+    Route::get('/{id}', 'WorkoutController@show')->middleware('auth:api');
+    Route::get('/day/{day}', 'WorkoutController@showDaily')->middleware('auth:api');
+    Route::get('/start/{day}', 'WorkoutController@start')->middleware('auth:api');
+    Route::patch('/update/{day}/{exercise}', 'WorkoutController@update')->middleware('auth:api');
 });
 
 /*
@@ -304,6 +305,18 @@ Route::group(['prefix' => 'workouts'], function() {
 */
 
 Route::group(['prefix' => 'workouts-history'], function() {
-    Route:: get('/', 'WorkoutHistoryController@index')->middleware('auth:api');
-    Route:: post('/', 'WorkoutHistoryController@store')->middleware('auth:api');
+    Route::get('/', 'WorkoutHistoryController@index')->middleware('auth:api');
+    Route::get('/{date}', 'WorkoutHistoryController@showByDate')->middleware('auth:api');
+    Route::post('/', 'WorkoutHistoryController@store')->middleware('auth:api');
+});
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+------------------------------------------ AVATARS ---------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
+*/
+
+Route::group(['prefix' => 'avatars'], function() {
+    Route::post('/', 'AvatarController@store')->middleware('auth:api');
+    Route::post('/update', 'AvatarController@update')->middleware('auth:api');
 });

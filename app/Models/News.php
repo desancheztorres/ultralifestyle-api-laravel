@@ -8,6 +8,6 @@ use App\Traits\Orderable;
 class News extends Model
 {
     use Orderable;
-    
-    protected $fillable = ['title', 'image', 'description', 'body', 'author', 'url'];
+
+    protected $fillable = ['title', 'image', 'description', 'body', 'author', 'author_image', 'url'];
 }

@@ -24,7 +24,7 @@ class WorkoutHistoryTransformer extends TransformerAbstract
             'reps' => $workoutHistory->reps,
             'kg' => $workoutHistory->kg,
             'time' => $workoutHistory->time,
-            'created_at' => $workoutHistory->created_at,
+            'created_at' => \Carbon\Carbon::parse($workoutHistory->created_at)->format('Y-m-d'),
         ];
     }
 

@@ -17,10 +17,10 @@ class CreateProfilesTable extends Migration
             $table->increments('id');
             $table->boolean('status')->default('1');
             $table->date('dob');
-            $table->float('height', 3, 2);
-            $table->float('weight', 4, 1);
-            $table->string('gender', 6);
-            $table->integer('ethnic_id')->unsigned();
+            $table->integer('height');
+            $table->integer('weight');
+            $table->enum('gender', ['Male', 'Female']);
+            $table->integer('preference_id')->unsigned();
             $table->integer('target_id')->unsigned();
             $table->float('bmi', 3, 1);
             $table->integer('bmr');
@@ -32,7 +32,7 @@ class CreateProfilesTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->timestamps();
 
-            $table->foreign('ethnic_id')->references('id')->on('ethnics')->onDelete('cascade');
+            $table->foreign('preference_id')->references('id')->on('preferences')->onDelete('cascade');
             $table->foreign('target_id')->references('id')->on('targets')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

@@ -21,7 +21,7 @@ class CreateWorkoutHistoriesTable extends Migration
             $table->integer('reps');
             $table->integer('kg');
             $table->time('time');
-            $table->timestamps();
+            $table->timestamp('created_at');
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
@@ -35,6 +35,6 @@ class CreateWorkoutHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('history_workouts');
+        Schema::dropIfExists('workout_histories');
     }
 }

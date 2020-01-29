@@ -15,6 +15,7 @@ class NewsTransformer extends TransformerAbstract {
             'description' => $news->description,
             'body' => $news->body,
             'author' => $news->author,
+            'author_image' => $news->author_image,
             'url' => $news->url,
             'created_at' => $news->created_at->toDateTimeString(),
             'created_at_human' => $news->created_at->diffForHumans(),

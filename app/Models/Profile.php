@@ -9,15 +9,15 @@ class Profile extends Model
     protected $fillable = ['gender', 'height', 'weight', 'dob', 'ethnic', 'target'];
 
     public function user() {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo(User::class);
     }
 
     public function isActive() {
         return $this->status ? true : false;
     }
 
-    public function ethnic() {
-        return $this->belongsTo(Ethnic::class);
+    public function preference() {
+        return $this->belongsTo(Preference::class);
     }
 
     public function target() {
@@ -26,5 +26,9 @@ class Profile extends Model
 
     public function level() {
         return $this->belongsTo(ExperienceLevel::class);
+    }
+
+    public function avatar() {
+        return $this->hasOne(Avatar::class);
     }
 }

@@ -7,9 +7,6 @@ use App\Models\Profile;
 
 class ProfileTransformer extends TransformerAbstract
 {
-
-    protected $defaultIncludes = ['user', 'target', 'ethnic'];
-
     /**
      * A Fractal transformer.
      *
@@ -20,13 +17,18 @@ class ProfileTransformer extends TransformerAbstract
     {
         return [
             'id' => $profile->id,
+            'name' => $profile->user->name,
+            'email' => $profile->user->email,
+            'avatar' => $profile->avatar->image ? $profile->avatar->image : null,
             'dob' => $profile->dob,
             'gender' => $profile->gender,
-            'height' => number_format($profile->height, 2, '.', ''),
-            'weight' => number_format($profile->weight, 1, '.', ''),
-            'bmi' => number_format($profile->bmi, 2, '.', ''),
-            'bmr' => $profile->bmr,
-            'calories' => $profile->calories,
+            'height' => $profile->height,
+            'weight' => $profile->weight,
+            'preference' => $profile->preference->name,
+            'target' => $profile->target->name,
+            'bmi' => number_format($profile->bmi, 1, '.', ''),
+            'bmr' => number_format($profile->bmr, 1, '.', ''),
+            'calories' => number_format($profile->calories, 1, '.', ''),
             'calories_used' => $profile->calories_used,
             'fat' => $profile->fat,
             'protein' => $profile->protein,
@@ -35,17 +37,5 @@ class ProfileTransformer extends TransformerAbstract
             'updated_at' => $profile->updated_at->toDateTimeString(),
             'created_at_human' => $profile->created_at->diffForHumans(),
         ];
-    }
-
-    public function includeUser(Profile $profile) {
-        return $this->item($profile->user, new UserTransformer);
-    }
-
-    public function includeTarget(Profile $profile) {
-        return $this->item($profile->target, new TargetTransformer);
-    }
-
-    public function includeEthnic(Profile $profile) {
-        return $this->item($profile->ethnic, new EthnicTransformer);
     }
 }
